@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter.filedialog import asksaveasfile 
 import networkx as nx
+import matplotlib
+matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
