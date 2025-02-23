@@ -9,7 +9,14 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import network as DR
 import os
-
+"""
+0.1
+-the text field scrolls on its own -> NOT DONE
+-the text field should clear after a few messages -> NOT DONE
+-Clear all button -> NOT DONE
+-A way to add multiple connections and nodes at once -> NOT DONE
+-Weights and activation of neurons -> IN PROGRESS
+"""
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -128,6 +135,28 @@ class App(tk.Tk):
         self.draw_current_graph()
         
 
+    def draw_current_graph(self):
+        if self.current_canvas:
+            self.current_canvas.get_tk_widget().pack_forget()
+        # Create a new Matplotlib figure
+        fig = Figure(figsize=(5, 4), dpi=100)
+        ax = fig.add_subplot(111)
+
+        # Draw the current graph
+        edge_labels = nx.get_edge_attributes(self.net.graph, "weight")
+        pos = nx.spring_layout(self.net.graph)
+
+        nx.draw(self.net.graph, ax=ax, with_labels=True, pos= pos)
+        nx.draw_networkx_edge_labels(self.net.graph,pos= pos, edge_labels=edge_labels, ax=ax)
+
+        #Embed the figure in this Tkinter window
+        canvas = FigureCanvasTkAgg(fig, master=self)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+        # Keep track of this new canvas so we can remove it if we load another file
+        self.current_canvas = canvas
+
 # These things might be better to have them in a separate util file just for the sake of organisation 
 
     def save_file(self):
@@ -169,24 +198,6 @@ class App(tk.Tk):
         if file_path:
             self.net.graph = nx.read_graphml(file_path)
             self.draw_current_graph()
-
-    def draw_current_graph(self):
-        if self.current_canvas:
-            self.current_canvas.get_tk_widget().pack_forget()
-        # Create a new Matplotlib figure
-        fig = Figure(figsize=(5, 4), dpi=100)
-        ax = fig.add_subplot(111)
-
-        # Draw the current graph
-        nx.draw(self.net.graph, ax=ax, with_labels=True)
-
-        #Embed the figure in this Tkinter window
-        canvas = FigureCanvasTkAgg(fig, master=self)
-        canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-
-        # Keep track of this new canvas so we can remove it if we load another file
-        self.current_canvas = canvas
 
 
 if __name__ == "__main__":

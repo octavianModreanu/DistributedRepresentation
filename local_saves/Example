@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d1" for="edge" attr.name="weight" attr.type="double" />
+  <key id="d0" for="node" attr.name="category" attr.type="string" />
+  <graph edgedefault="undirected">
+    <node id="Art">
+      <data key="d0">Name</data>
+    </node>
+    <node id="Rick">
+      <data key="d0">Name</data>
+    </node>
+    <node id="Lance">
+      <data key="d0">Name</data>
+    </node>
+    <node id="Ralph">
+      <data key="d0">Name</data>
+    </node>
+    <node id="Sam">
+      <data key="d0">Name</data>
+    </node>
+    <node id="20">
+      <data key="d0">Age</data>
+    </node>
+    <node id="30">
+      <data key="d0">Age</data>
+    </node>
+    <node id="40">
+      <data key="d0">Age</data>
+    </node>
+    <node id="single">
+      <data key="d0">Marital Status</data>
+    </node>
+    <node id="married">
+      <data key="d0">Marital Status</data>
+    </node>
+    <node id="divorced">
+      <data key="d0">Marital Status</data>
+    </node>
+    <node id="Jet">
+      <data key="d0">Gang</data>
+    </node>
+    <node id="Shark">
+      <data key="d0">Gang</data>
+    </node>
+    <node id="JH">
+      <data key="d0">Education</data>
+    </node>
+    <node id="HS">
+      <data key="d0">Education</data>
+    </node>
+    <node id="Col">
+      <data key="d0">Education</data>
+    </node>
+    <node id="Pusher">
+      <data key="d0">Occupation</data>
+    </node>
+    <node id="Burglar">
+      <data key="d0">Occupation</data>
+    </node>
+    <node id="Bookie">
+      <data key="d0">Occupation</data>
+    </node>
+    <edge source="Art" target="Rick">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Art" target="Lance">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Art" target="Ralph">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Art" target="Sam">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Rick" target="Sam">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Rick" target="Lance">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Rick" target="Ralph">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Lance" target="Ralph">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Lance" target="Sam">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Ralph" target="Sam">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="20" target="30">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="20" target="40">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="30" target="40">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="single" target="married">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="single" target="divorced">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="married" target="divorced">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Jet" target="Shark">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="JH" target="HS">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="JH" target="Col">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="HS" target="Col">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Pusher" target="Burglar">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Pusher" target="Bookie">
+      <data key="d1">-0.1</data>
+    </edge>
+    <edge source="Burglar" target="Bookie">
+      <data key="d1">-0.1</data>
+    </edge>
+  </graph>
+</graphml>

@@ -12,11 +12,18 @@ class network():
             self.graph = graph
 
     def add_node(self, input, category_in):
-        #category_in = input("Add a category for this node: "
         self.graph.add_node(input, category = category_in)
 
     def add_conn(self, node1, node2):
-        self.graph.add_edge(node1, node2)
+        # This checks if attributes are the same, which case the weights are inhibitory
+        # else the weights are excitatory
+
+        attr1 = self.graph.nodes.get(node1)
+        attr2 = self.graph.nodes.get(node2)
+        if attr1 == attr2:
+            self.graph.add_edge(node1, node2, weight= -0.1)
+        else:
+            self.graph.add_edge(node1, node2, weight= 0.1)
     
     def remove_node(self, input):
         self.graph.remove_node(input)
