@@ -11,11 +11,20 @@ import network as DR
 import os
 """
 0.1
--the text field scrolls on its own -> NOT DONE
--the text field should clear after a few messages -> NOT DONE
--Clear all button -> NOT DONE
--A way to add multiple connections and nodes at once -> NOT DONE
--Weights and activation of neurons -> IN PROGRESS
+-the text field scrolls on its own -> NOT DONE    3
+-the text field should clear after a few messages -> NOT DONE    3
+-Clear all button -> NOT DONE     3
+-A way to add multiple connections and nodes at once -> NOT DONE    3
+-Activation of nodes -> IN PROGRESS     1
+-Weights -> DONE
+-Person nodes -> IN PROGRESS   1 
+-Bind return to save button on popsave window -> NOT DONE     3
+-If you just press the save button when you're in the popsave window, it should save under the current name -> NOT DONE   3
+-Nodes with the same attribute should cluster together -> IN PROGRESS     2
+    -> See chatgpt, but essentially we can give each category a cluster center to draw around
+
+0.2 
+-Embedding of novel data -> NOT DONE        4
 """
 class App(tk.Tk):
     def __init__(self):
@@ -187,7 +196,7 @@ class App(tk.Tk):
             os.remove(file_path)
         file_path = os.path.join(saves_folder,filename)
         nx.write_graphml(self.net.graph, file_path)
-        self.txt.insert(tk.END, f"Graph saved to {file_path}")
+        self.txt.insert(tk.END, f"Graph saved to {file_path}\n")
 
         popsave.destroy()
 
