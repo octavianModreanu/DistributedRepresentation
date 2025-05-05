@@ -78,9 +78,9 @@ class App(tk.Tk):
         # Layout widgets
         self.lbl.pack()
         self.lblr.pack()
-        self.ent.pack()
-        self.entr.pack()
-        self.txt.pack()
+        self.ent.pack()   # Add node field
+        self.entr.pack()  # Remove node field
+        self.txt.pack()    # Text field
         self.load_button.pack()
         self.drop.pack()
         self.save_button.pack()
