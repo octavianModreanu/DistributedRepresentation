@@ -56,13 +56,13 @@ class matrix():
         if input in activated_nodes:
             return
         
-        print(f"Trying to activate node {input}...")
+        print(f"Trying to propagate node {input}'s activation...")
+        activated_nodes.add(input)
 
         for neighbor in self.adj_list[input]:
             if neighbor not in activated_nodes:
                 
-                print(f"Activating node {input} and propagating to connected nodes:")
-                activated_nodes.add(input)
+                print(f"{input} is propagating to connected nodes:")
 
                 print(f"  -> {neighbor}")
                 #activation function
@@ -70,7 +70,7 @@ class matrix():
                 
                 self.activation(neighbor, activated_nodes)
             else:
-                print(f"Node {input}'s connections are already activated\n")
+                print(f"{neighbor} is already activated\n")
                 
         
         
