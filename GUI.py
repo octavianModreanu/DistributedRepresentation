@@ -7,24 +7,33 @@ matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-import network as DR
+import network as DR # I was drunk when i wrote this I swear. Why is it called DR????
 import os
+from Matrices import matrix
 """
 0.1
+UI
 -the text field scrolls on its own -> NOT DONE    3
 -the text field should clear after a few messages -> NOT DONE    3
 -Clear all button -> NOT DONE     3
+-Bind return to save button on popsave window -> NOT DONE     3
 -A way to add multiple connections and nodes at once -> NOT DONE    3
--Activation of nodes -> IN PROGRESS     1
+-If you just press the save button when you're in the popsave window, it should save under the current name -> NOT DONE   3
+
+FUNCTIONALITY
+
+-Activation of nodes -> DONE     1
 -Weights -> DONE
 -Person nodes -> IN PROGRESS   1 
--Bind return to save button on popsave window -> NOT DONE     3
--If you just press the save button when you're in the popsave window, it should save under the current name -> NOT DONE   3
 -Nodes with the same attribute should cluster together -> IN PROGRESS     2
     -> See chatgpt, but essentially we can give each category a cluster center to draw around
 
+
+
+
 0.2 
 -Embedding of novel data -> NOT DONE        4
+
 """
 class App(tk.Tk):
     def __init__(self):
@@ -45,17 +54,24 @@ class App(tk.Tk):
 
         remove_frame = tk.Frame(top_frame)
         remove_frame.pack(side= "left", padx= 20)
+        
+        activation_frame = tk.Frame(top_frame)
+        activation_frame.pack(side= "left", padx= 20)
 
         # Label, Entry, Text
         self.lbl = tk.Label(add_frame, text="ADD NODE")
         self.ent = tk.Entry(add_frame)
         self.lblr = tk.Label(remove_frame, text="REMOVE NODE")
         self.entr = tk.Entry(remove_frame)
+        self.lblactiv = tk.Label(activation_frame, text="ACTIVATION")
+        self.activ = tk.Entry(activation_frame)
+        
         self.txt = tk.Text(self, height=5)
         
         # Bind <Return> in the Entry to add_line
         self.ent.bind("<Return>", self.add_line)
         self.entr.bind("<Return>", self.remove_line)
+        self.activ.bind("<Return>", self.activate_nodes)
 
         # Dropdown button
         options = [
@@ -73,13 +89,15 @@ class App(tk.Tk):
         # Button to open GraphML files
         self.load_button = tk.Button(self, text="Load GraphML", command=self.open_file)
         # Save button
-        self.save_button = tk.Button(self, text= "Save", command= self.save_file)
+        self.save_button = tk.Button(self, text= "Save", command= self.save_file_button)
 
         # Layout widgets
         self.lbl.pack()
         self.lblr.pack()
+        self.lblactiv.pack()
         self.ent.pack()   # Add node field
         self.entr.pack()  # Remove node field
+        self.activ.pack() # Activation field
         self.txt.pack()    # Text field
         self.load_button.pack()
         self.drop.pack()
@@ -144,6 +162,14 @@ class App(tk.Tk):
         self.draw_current_graph()
         
 
+    def activate_nodes(self, event):
+        input = self.activ.get()
+        self.net.node_activation(input)
+        self.txt.insert(tk.END, f"Node activation: {input}\n")
+        self.activ.delete(0, tk.END)
+
+        self.draw_current_graph()
+
     def draw_current_graph(self):
         if self.current_canvas:
             self.current_canvas.get_tk_widget().pack_forget()
@@ -152,7 +178,8 @@ class App(tk.Tk):
         ax = fig.add_subplot(111)
 
         # Draw the current graph
-        edge_labels = nx.get_edge_attributes(self.net.graph, "weight")
+        raw_edge_labels = nx.get_edge_attributes(self.net.graph, "weight")
+        edge_labels = {(u, v): f"{raw_edge_labels[(u, v)]:.1f}" for (u, v) in raw_edge_labels}
         pos = nx.spring_layout(self.net.graph)
 
         nx.draw(self.net.graph, ax=ax, with_labels=True, pos= pos)
@@ -163,12 +190,12 @@ class App(tk.Tk):
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
-        # Keep track of this new canvas so we can remove it if we load another file
+        # Keep track of this new canvas so I can remove it if I load another file
         self.current_canvas = canvas
 
 # These things might be better to have them in a separate util file just for the sake of organisation 
 
-    def save_file(self):
+    def save_file_button(self):
         popsave = tk.Toplevel(self)
         popsave.title("Save Graph")
         popsave.geometry("250x250")
@@ -176,13 +203,13 @@ class App(tk.Tk):
         # Entry widget for the popup
         filename_entry = tk.Entry(popsave)
 
-        save_button= tk.Button(popsave, text= "Save", command= lambda: self.confirm_save(filename_entry,popsave))
+        save_button= tk.Button(popsave, text= "Save", command= lambda: self.save_file(filename_entry,popsave))
         
         # Widgetssss
         filename_entry.pack()
         save_button.pack()
 
-    def confirm_save(self, filename_entry, popsave):
+    def save_file(self, filename_entry, popsave):
         filename= filename_entry.get().strip()
         if not filename:
             return
@@ -205,7 +232,7 @@ class App(tk.Tk):
             #filetypes=[("GraphML Files", "*.graphml"), ("All files", "*.*")]
         )
         if file_path:
-            self.net.graph = nx.read_graphml(file_path)
+            self.net.load_from_file(file_path)
             self.draw_current_graph()
 
 
