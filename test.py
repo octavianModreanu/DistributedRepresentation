@@ -16,10 +16,9 @@ b = a.split(" ")
 g = nx.Graph()
 for _ in b:
     g.add_node(_)
-# Connect each pair of nodes with an edge of weight 0.1
+
 for node1, node2 in itertools.combinations(g.nodes(), 2):
     g.add_edge(node1, node2, weight=0.1)
 
-# Verify
 for edge in g.edges(data=True):
     print(edge)
