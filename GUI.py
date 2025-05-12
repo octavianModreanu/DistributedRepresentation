@@ -20,6 +20,8 @@ UI
 -A way to add multiple connections and nodes at once -> NOT DONE    3
 -If you just press the save button when you're in the popsave window, it should save under the current name -> NOT DONE   3
 
+
+
 FUNCTIONALITY
 
 -Activation of nodes -> DONE     1

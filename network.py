@@ -8,9 +8,6 @@ Just an idea but maybe i could make separate matrices based on attributes though
 i think that's for later to think about
 
 Bugs:
-    The matrix might add nodes from previous loaded saves 
-        -> It should refresh with each load
-        -> Some kind of save/load functionality should be in place for the backend as well
     I think I should initialize every array with numpy not just the connection one
     The refreshing of conn_matrix could delete existing connections already stored in the matrix
 """

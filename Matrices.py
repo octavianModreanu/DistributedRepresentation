@@ -18,7 +18,7 @@ class matrix():
     def node_matrix(self):
         return self._node_matrix
     
-    # I might need to update the connection matrix here since it makes everything 0 again
+    # I might need to update the connection matrix here since it makes everything 0 again (outdated?)
     @node_matrix.setter
     def node_matrix(self, value):
         self._node_matrix = value
