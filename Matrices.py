@@ -49,6 +49,8 @@ class matrix():
     
     # what if it would activate a node, and then it checks what's it connected with,
     # then it activates those follow-up connections and adjusts weights
+    # Bug: the function only stores activated nodes once per call,
+    # once it reaches the next input, the set is empty 
     def activation(self, input, activated_nodes = None):
         if activated_nodes is None:
             activated_nodes = set()
