@@ -27,7 +27,7 @@ class matrix():
     
     def append_to_matrix(self, new_node):
         
-        # Appends a new node to the backend matrix and expands the connection matrix
+        # Appends a new node to the backend matrix and expands the connection adjacency list
         self._node_matrix.append(new_node)
         self.adj_list[new_node] = []
 

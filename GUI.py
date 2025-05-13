@@ -10,6 +10,7 @@ from matplotlib.figure import Figure
 import network as DR # I was drunk when i wrote this I swear. Why is it called DR????
 import os
 from Matrices import matrix
+import random
 """
 0.1
 UI
@@ -19,17 +20,19 @@ UI
 -Bind return to save button on popsave window -> NOT DONE     3
 -A way to add multiple connections and nodes at once -> NOT DONE    3
 -If you just press the save button when you're in the popsave window, it should save under the current name -> NOT DONE   3
-
+-Flesh out Training UI -> NOT DONE   2
+-Recall UI -> NOT DONE   1
 
 
 FUNCTIONALITY
 
+-Automatic categorization of input -> IN PROGRESS 1!!
 -Activation of nodes -> DONE     1
 -Weights -> DONE
--Person nodes -> IN PROGRESS   1 
+-Person nodes -> NOT DONE   3
 -Nodes with the same attribute should cluster together -> IN PROGRESS     2
     -> See chatgpt, but essentially we can give each category a cluster center to draw around
-
+-Recall functionality -> NOT DONE     1
 
 
 
@@ -123,12 +126,32 @@ class App(tk.Tk):
                 self.net.add_conn(node1,node2)
                 break
 
+            # This should eventually be written in a separate function with maybe a new entry
             if _ == " ":
-                self.txt.insert(tk.END, f"A dash (-) is used to add a new connection\n")
-                break
+                self.txt.insert(tk.END, f"Creating a person node...\n")
+                
+                # Generating an id for the person node
+                new_id = f"{random.randint(1000,9999)}"
+                while new_id in self.net.graph.nodes:
+                    new_id = f"{random.randint(1000,9999)}"
+                self.net.add_node(new_id, category_in= "Person Node")
+                    
+                # Connecting the person node to the nodes in the entry
+                split_input = list(input.strip().split(" "))
+                for i in split_input:
+                    if i in self.net.graph.nodes:
+                        if i != new_id:
+                            self.net.add_conn(i, new_id)
+                            print(f"Connected {i} to {new_id}\n")
+                    else:
+                        print(f"Node {i} not found in graph. Adding node {i} to the graph..\n")
+                        self.net.add_node(i, category_in)
+                            
+                
+                self.txt.insert(tk.END, f"Person node created with ID: {new_id}\n")  
         else:
             # Add a one word node
-            self.txt.insert(tk.END, f"New Node: {self.ent.get()}\n")
+            self.txt.insert(tk.END, f"New Node: {input}\n")
             self.net.add_node(input, category_in)
         
         # Clear entry
