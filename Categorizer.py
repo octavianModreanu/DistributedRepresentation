@@ -1,5 +1,6 @@
 from train_data import TRAIN_DATA, CATEGORIES
 import numpy as np
+from collections import Counter
 
 class NaiveBayes:
     def __init__(self, vocab = None, vector = None):
@@ -43,33 +44,53 @@ class NaiveBayes:
         
         else:
             self.vector = vector
-            
-    @staticmethod
-    def tokenizer(input):
-        for i in input:
-            if i == " ":
-                return input.split(" ")
-            elif i == "-":
-                return input.split("-")
-            elif i == ",":
-                return input.split(",")
-        else:
-            return [input]
     
-    def count_nonzero(self, vector):
-        return int(np.count_nonzero(vector))
+    # why do be this static???
+    @staticmethod
+    def tokenizer(input, split = 0):
+        split_input = []
+        if split == 0:
+            for i in input:
+                if i == " ":
+                    return input.split(" ")
+                elif i == "-":
+                    return input.split("-")
+                elif i == ",":
+                    return input.split(",")
+            else:
+                return [input]
+        elif split == 1:
+            for i in input:
+                split_input.append(i)
+            return split_input
+        
 
+
+    
     def vectorize(self, tokens):
         for token in tokens:
             if token in self.vocab:
                 self.vector[self.vocab[token]] += 1
         return self.vector
     
+    def count_nonzero(self, vector):
+        return int(np.count_nonzero(vector))
+    
+    def count_vector(self, vector):
+        vector_count = Counter(vector)
+        count = []
+        sum = 0
+        for i in vector_count:
+            if i > 0:
+                count.append(vector_count[i])
+        for i in count:
+            sum += i
+        return sum
+
+
     def NaiveBayes(self, input):
         """
-        Probability of John given that it is a name is p(John|Name) = self.vocab.get(John)/len(self.vector_name)
-        Should it check the category?
-        I need to revisit this tmr
+
         """
         """
         """
@@ -87,15 +108,13 @@ class NaiveBayes:
                 likelihood_occupation = self.vector_occupation[idx]/self.count_nonzero(self.vector_occupation)
                 likelihood_gang = self.vector_gang[idx]/self.count_nonzero(self.vector_gang)
                 likelihood_married = self.vector_married[idx]/self.count_nonzero(self.vector_married)
-            
-            
-                # This is off, i need all the examples labeled under the category ill do it tmr
-                prior_name = self.count_nonzero(self.vector_name) / len(self.vector)
-                prior_age = self.count_nonzero(self.vector_age) / len(self.vector)
-                prior_education = self.count_nonzero(self.vector_education) / len(self.vector)
-                prior_occupation = self.count_nonzero(self.vector_occupation) / len(self.vector)
-                prior_gang = self.count_nonzero(self.vector_gang) / len(self.vector)
-                prior_married = self.count_nonzero(self.vector_married) / len(self.vector)
+        
+                prior_name = self.count_vector(self.vector_name) / len(self.vector)
+                prior_age = self.count_vector(self.vector_age) / len(self.vector)
+                prior_education = self.count_vector(self.vector_education) / len(self.vector)
+                prior_occupation = self.count_vector(self.vector_occupation) / len(self.vector)
+                prior_gang = self.count_vector(self.vector_gang) / len(self.vector)
+                prior_married = self.count_vector(self.vector_married) / len(self.vector)
                 
                 posterior_name = likelihood_name * prior_name
                 posterior_age = likelihood_age * prior_age
@@ -120,15 +139,6 @@ class NaiveBayes:
                 return scores, highest_prob_cat, highest_prob_val
             else:
                 return print(f"There is no {input} token in the training dataset")
-    
-        
-        #idx = self.vocab.get(input)
-        #posterior = (The amount of times john is in the name vector)/len(self.vector_name)
-        
-        if idx is not None:
-            return print(self.vector_married[idx])
-        else:
-            return print(f"There is no '{input}' in the training dataset")
         
 
 NB = NaiveBayes()
@@ -137,7 +147,7 @@ input_text = "John Doe, 30, Software Engineer, Single"
 tokens = NB.tokenizer(input_text)
 vector = NB.vectorize(tokens)
 
-print(NB.NaiveBayes("Doe"))
+print(NB.tokenizer("Single"))
 
             
 
