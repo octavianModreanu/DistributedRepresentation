@@ -90,7 +90,11 @@ class NaiveBayes:
 
     def NaiveBayes(self, input):
         """
-
+        I used to have something here but git didn't save it for some reason. 
+        It was basically saying that i can predict stuff based on the number of letters,
+        length of the word and their probability of being in each category - I'm not quite
+        sure if the model is going to predict it all the time but maybe i can just add more parameters
+        to measure. Can't really think of any right now but that's a future me problem. 
         """
         """
         """
