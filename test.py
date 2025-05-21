@@ -52,17 +52,17 @@ def KL(ctg):
                 q = ctg.get(key, 0)
                 if p > 0 and q > 0:
                     probKL += (p * log(p/q))
-                    print(f"Letter: {index}   Value: {p}")
-                    print(f"Ctg_Letter: {key}   Ctg_Value: {q}")
-                    print(f"probKL = {p * log(p/q)}")
+                    #print(f"Letter: {index}   Value: {p}")
+                    #print(f"Ctg_Letter: {key}   Ctg_Value: {q}")
+                    #print(f"probKL = {p * log(p/q)}")
                 else:
-                    print("probKL is undefined")
+                    print(f"probKL is undefined for {key}")
     if probKL == 0:
         print(f"The distributions are not similar at all, probKL is set to 99999")
-        probKL = 9999
+        probKL = 99999
         return probKL
     else:
-        print (f"Final KL value for input '{input_data}': {probKL}\n")
+        #print (f"Final KL value for input '{input_data}': {probKL}\n")
         return probKL
 
 def cos_sim(dict_input):
@@ -70,75 +70,22 @@ def cos_sim(dict_input):
     Cosine similarity divides the direction of the vectors by their magnitude so 
     lengths of the vectors don't matter. 
     """
+    lett_freq = [lett_frq_name,lett_frq_age,lett_frq_edu,lett_frq_occ,lett_frq_gang,lett_frq_married]
+    cos_sim_dict = {}
     
-    np_input_name = {}
-    np_input_age = {}
-    np_input_edu = {}
-    np_input_occ = {}
-    np_input_gang = {}
-    np_input_married = {}
-    
-    # this is going to create problems down the road as i add more characters to the training data
-    # Maybe i can import a dictionary of all the characters when i implement this in the main file
-    # This doesn't work but even if it'd work i still think i need to find another way.
-    # Thing is, with large inputs this is unfeasible i think
-    # I think it's fine as long as im not trying to give it huge inputs
-    
-    
-    # This is stuff of nightmares it doesn't even work lol
-    if len(np_input_name) != len(np_name): 
-        for index in dict_input:
-            for key in lett_frq_name:
-                if key != index:
-                    np_input_name.update({f"{key}": 0})
-                    
-    if len(np_input_age) != len(np_age): 
-        for index in dict_input:
-            for key in lett_frq_age:
-                if key != index:
-                    np_input_age.update({f"{key}": 0})
-    
-    if len(np_input_edu) != len(np_edu): 
-        for index in dict_input:
-            for key in lett_frq_edu:
-                if key != index:
-                    np_input_edu.update({f"{key}": 0})
-    
-    if len(np_input_occ) != len(np_occ): 
-        for index in dict_input:
-            for key in lett_frq_occ:
-                if key != index:
-                    np_input_occ.update({f"{key}": 0})
-    
-    if len(np_input_gang) != len(np_gang): 
-        for index in dict_input:
-            for key in lett_frq_gang:
-                if key != index:
-                    np_input_gang.update({f"{key}": 0})
-                    
-    if len(np_input_married) != len(np_married): 
-        for index in dict_input:
-            for key in lett_frq_married:
-                if key != index:
-                    np_input_married.update({f"{key}": 0})
-                    
-    np_input.update(dict_input)
-    np_input = sorted(np_input.items())
-    np_input = np.array(list(np_input))
-        
-    
-    cos_sim = {
-        "Name" : np.dot(np_name, np_input)/np.linalg.norm(np_name) * np.linalg.norm(np_input),
-        "Age" : np.dot(np_age, np_input)/np.linalg.norm(np_name) * np.linalg.norm(np_input),
-        "Education" : np.dot(np_edu, np_input)/np.linalg.norm(np_name) * np.linalg.norm(np_input),
-        "Occupation" : np.dot(np_occ, np_input)/np.linalg.norm(np_name) * np.linalg.norm(np_input),
-        "Gang" : np.dot(np_gang,np_input)/np.linalg.norm(np_name) * np.linalg.norm(np_input),
-        "Marital Statuts" : np.dot(np_married, np_input)/np.linalg.norm(np_name) * np.linalg.norm(np_input)
-    }
-    return np_input
+    for frq, cat in zip(lett_freq,CATEGORIES):
+        keys = list(frq.keys())
+        vector_input = np.array([dict_input.get(k, 0) for k in keys])
+        vector_cat = np.array([frq.get(k, 0) for k in keys])
+        norm_product = np.linalg.norm(vector_input) * np.linalg.norm(vector_cat)
+        if norm_product == 0:
+            cos_sim_dict[cat] = float('nan')
+        else:
+            cos_sim_dict[cat] = np.dot(vector_input,vector_cat)/ norm_product
+    return cos_sim_dict
 
 nb = NaiveBayes()
-input_data = "Doe"
+input_data = "John"
 
 # i think these are initialized in the constructor
 # and they should also be called "character_frq"
@@ -148,13 +95,6 @@ lett_frq_edu = letter_freq(letter_count(ctg = "Education"))
 lett_frq_occ = letter_freq(letter_count(ctg = "Occupation"))
 lett_frq_gang = letter_freq(letter_count(ctg = "Gang"))
 lett_frq_married = letter_freq(letter_count(ctg = "Marital Status"))
-
-np_name = np.array(list(lett_frq_name.items()))
-np_age = np.array(list(lett_frq_age.items()))
-np_edu = np.array(list(lett_frq_edu.items()))
-np_occ = np.array(list(lett_frq_occ.items()))
-np_gang = np.array(list(lett_frq_gang.items()))
-np_married = np.array(list(lett_frq_married.items()))   
 
 # This should be in one of the helper functions i think
 input_data = input_data.lower()
@@ -171,12 +111,16 @@ lett_frq_tokens = letter_freq(lett_frq_tokens)
 lett_frq = [lett_frq_name, lett_frq_age, lett_frq_edu, lett_frq_occ, lett_frq_gang, lett_frq_married]
 probKL = {}
 
-print(np_name)
+mama = cos_sim(lett_frq_tokens)
+
+
 
 # Loop over each category and its corresponding letter frequency distribution
-#for i, freq in zip(CATEGORIES, lett_frq):
-#    probKL[i] = KL(freq)
+for i, freq in zip(CATEGORIES, lett_frq):
+    probKL[i] = KL(freq)
 
+print(probKL)
+print(mama)
 """
 So at this point I need to compare distributions
 Doe, 30, Software Engineer, Single
