@@ -142,7 +142,8 @@ class NaiveBayes:
                 
                 return scores, highest_prob_cat, highest_prob_val
             else:
-                return print(f"There is no {input} token in the training dataset")
+                #return print(f"There is no {input} token in the training dataset")
+                pass
         
 
 NB = NaiveBayes()
