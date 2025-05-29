@@ -26,7 +26,7 @@ UI
 
 FUNCTIONALITY
 
--Automatic categorization of input -> IN PROGRESS 1!!
+-Automatic categorization of input -> IN PROGRESS 1 
 -Activation of nodes -> DONE     1
 -Weights -> DONE
 -Person nodes -> NOT DONE   3
